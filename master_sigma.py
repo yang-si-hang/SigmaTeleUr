@@ -3,14 +3,20 @@ Master Sigma Script using ZeroMQ to publish its pose, gripper state, and trigger
 Date: 2025-12-30
 """
 from socket import socket
+from socket import socket
 import sys
 import zmq
 import time
 import ctypes
 import numpy as np
 from forcedimension_core import dhd, drd
+from forcedimension_core import dhd, drd
 from forcedimension_core.dhd.os_independent import kbHit, kbGet
 
+CONNECT = True
+
+def sigma_init():
+    if (ID := drd.open()) == -1:
 CONNECT = True
 
 def sigma_init():
@@ -126,6 +132,7 @@ def main(FPS:int=100):
             
             # 高效发送：使用 pyobj 会自动序列化
             pub_socket.send_pyobj(message)
+            pub_socket.send_pyobj(message)
             
             # 控制频率
             elapsed = time.perf_counter() - start_time
@@ -144,7 +151,14 @@ def main(FPS:int=100):
     finally:
         dhd.close(ID)
         drd.close(ID)
+        drd.close(ID)
         print("\n设备已关闭。")
+        pub_socket.close()
+        pub_context.term()
+        sub_socket.close()
+        sub_context.term()
+        print("ZeroMQ 已关闭。")
+
         pub_socket.close()
         pub_context.term()
         sub_socket.close()
