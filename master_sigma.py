@@ -17,10 +17,6 @@ CONNECT = True
 
 def sigma_init():
     if (ID := drd.open()) == -1:
-CONNECT = True
-
-def sigma_init():
-    if (ID := drd.open()) == -1:
         print(f"Error: {dhd.errorGetLastStr()}")
         sys.exit(1)
 
