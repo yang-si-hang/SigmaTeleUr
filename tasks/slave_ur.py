@@ -1,6 +1,6 @@
 """
 Slave UR Script using ZeroMQ to follow Master Sigma's pose and gripper state.
-Save the trajectory data to HDF5 when triggered.
+Save the trajectory data to HDF5 when triggered, include: robot pos, orientation (as rotvec), gripper pos, timestamp.
 Map Sigma movements to UR movements when `t` is pressed.
 Date: 2025-12-30
 """
@@ -14,7 +14,7 @@ from rtde_receive import RTDEReceiveInterface
 
 from const import SAMPLE_PATH
 import utilize.robotiq_gripper as robotiq_gripper
-from utilize.const import ROBOT_IP, PORT
+from const import ROBOT_IP, PORT
 
 FACTOR = 2.  # 位移缩放因子
 GRIPPER_ENC_MAX, GRIPPER_ENC_MIN = 0.53, 0.0
@@ -87,7 +87,7 @@ def main(FPS:int=100):
                 timestamp = data.get("timestamp", 0.0)
 
                 latency = time.time() - timestamp
-                print(f"数据延迟: {latency:.4f} 秒")
+                # print(f"数据延迟: {latency:.4f} 秒")
 
                 if connected:
                     if not is_recording:

@@ -5,7 +5,11 @@ __pycache___/
 *.swp
 *.swo
 
-*.egg-info/
-
 build/
 .eggs/
+*.egg-info/
+
+.vscode/
+
+data/demos/
+data/samples/

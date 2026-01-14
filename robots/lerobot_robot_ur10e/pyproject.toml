@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lerobot_robot_ur10e"
+version = "0.0.1"
+description = "Universal Robots UR10e integration for LeRobot"
+readme = "README.md"
+authors = [
+  { name = "Your Name", email = "your.email@example.com" },
+]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "ur_rtde",       # UR 官方推荐的底层通信库
+  "numpy",
+  "lerobot>=0.4",  # 确保 LeRobot 版本支持插件系统
+]
+
+[tool.setuptools]
+packages = ["lerobot_robot_ur10e"]
+
+[tool.setuptools.package-data]
+# 如果你有 UR10e 的描述文件或固定的逆解配置，可以在此包含
+# "lerobot_robot_ur10e" = ["*.urdf", "*.yaml"]
