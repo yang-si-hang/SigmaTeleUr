@@ -1,5 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from lerobot.robots.utils import RobotConfig
+from lerobot.cameras import CameraConfig
 from const import ROBOT_IP, PORT
 
 @RobotConfig.register_subclass("ur10e")
@@ -13,3 +14,5 @@ class Ur10eRobotConfig(RobotConfig):
     acceleration: float = 0.3
     # 这里的 type 字符串要和 CLI 匹配
     type: str = "ur10e"
+    absolute: bool = True
+    cameras: dict[str, CameraConfig] = field(default_factory=dict)

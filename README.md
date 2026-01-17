@@ -41,3 +41,13 @@ export FDSDK="$HOME/ysh/Program/sdk-3.17.6"
 - "chunk_size": 数据分块的个数(每个块最多1000 frame ?)
 
 - "q01, q10...": 数据从小到大的对应百分位位置的数值
+
+### Customize Robot & Camera
+
+- 放在`robots`路径下，通过`pip install .`方式添加到conda环境
+
+- 在调试阶段，通过`pip install -e .`安装package，然后在需要的python脚本中直接导入，而不使用lerobot默认的发现机制
+
+### Inference
+
+- 使用`lerobot_record.py`，yaml文件在`configs`路径下，对应的策略模型文件在`policy`路径下

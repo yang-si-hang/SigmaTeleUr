@@ -145,6 +145,9 @@ def visualize_dataset(
 
     logging.info("Logging to Rerun")
 
+    action_names = dataset.meta.features[ACTION].get("names")
+    state_names = dataset.meta.features[OBS_STATE].get("names")
+
     for batch in tqdm.tqdm(dataloader, total=len(dataloader)):
         # iterate over the batch
         for i in range(len(batch["index"])):
@@ -159,12 +162,15 @@ def visualize_dataset(
             # display each dimension of action space (e.g. actuators command)
             if ACTION in batch:
                 for dim_idx, val in enumerate(batch[ACTION][i]):
-                    rr.log(f"{ACTION}/{dim_idx}", rr.Scalars(val.item()))
+                    label = action_names[dim_idx] if action_names else dim_idx
+                    rr.log(f"{ACTION}/{label}", rr.Scalars(val.item()))
+                    # rr.log(f"{ACTION}/{dim_idx}", rr.Scalars(val.item()))
 
             # display each dimension of observed state space (e.g. agent position in joint space)
             if OBS_STATE in batch:
                 for dim_idx, val in enumerate(batch[OBS_STATE][i]):
-                    rr.log(f"state/{dim_idx}", rr.Scalars(val.item()))
+                    label = state_names[dim_idx] if state_names else dim_idx
+                    rr.log(f"state/{label}", rr.Scalars(val.item()))
 
             if DONE in batch:
                 rr.log(DONE, rr.Scalars(batch[DONE][i].item()))

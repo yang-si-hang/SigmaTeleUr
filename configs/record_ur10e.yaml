@@ -1,0 +1,58 @@
+# lerobot/configs/robot/ur10e.yaml
+
+# 对应 RobotConfig
+robot:
+  type: ur10e
+  robot_ip: "192.168.253.102"  # 替换为你的实际 UR 机器人 IP
+  gripper_port: 63352
+  velocity: 0.1
+  acceleration: 0.1
+  absolute: true
+
+  # 摄像头配置 (基于 OpenCVCameraConfig)
+  cameras:
+    main:
+      type: orbbec
+      serial_number_or_name: "CP9JA530008V"
+      fps: 30
+      width: 640
+      height: 480
+      use_depth: false
+      color_mode: "rgb"
+
+# 对应 DatasetRecordConfig
+dataset:
+  repo_id: ubuntu/eval_act_grasp_soda
+  root: outputs/eval_act_grasp_soda
+  # repo_id: ubuntu/eval_diffusion_grasp_soda
+  # root: outputs/eval_diffusion_grasp_soda
+  single_task: "Test policy inference and recording on UR10e"
+  fps: 30
+  episode_time_s: 60   # 测试时建议时间设短一点
+  reset_time_s: 5
+  num_episodes: 1
+  video: true
+  push_to_hub: false   # 本地测试设为 false
+
+# 策略推断配置
+policy:
+  # type: act
+  # pretrained_path: policy/act/100000/pretrained_model
+  type: diffusion
+  pretrained_path: policy/diffusion/100000/pretrained_model
+
+  input_features:
+    observation.images.main:
+      type: "VISUAL"
+      shape: [3, 480, 640]  # [通道, 高, 宽]
+    # 状态输入：通常是机械臂的关节角度或末端位姿
+    observation.state:
+        type: "STATE"
+        shape: [7]  # UR10e 是 6 自由度，如果包含夹爪可能是 7
+
+  output_features:
+    action:
+      type: "ACTION"
+      shape: [7]  # 必须与模型预期的动作维度一致
+
+display_data: true
